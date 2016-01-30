@@ -12,7 +12,13 @@ INCLUDE(CMakeForceCompiler)
 CMAKE_FORCE_C_COMPILER(${CMAKE_C_COMPILER} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CMAKE_CXX_COMPILER} GNU)
 
-#eclipse:
+
+#eclipse Assembler:
+#arm-none-eabi-gcc -mcpu=arm926ej-s -marm -mthumb-interwork -O0 -fmessage-length=0 
+# -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 
+# -x assembler-with-cpp -MMD -MP -MF"cyfx_gcc_startup.d" -MT"cyfx_gcc_startup.o" -c -o "cyfx_gcc_startup.o" "../cyfx_gcc_startup.S"
+
+#eclipse C:
 #arm-none-eabi-gcc -mcpu=arm926ej-s -marm -mthumb-interwork -O0 -fmessage-length=0 
 # -fsigned-char -ffunction-sections -fdata-sections -Wall  
 # -g3 -I"/home/stawel/Cypress/cyfx3sdk/boot_lib/1_3_3/include" -std=gnu11 -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
@@ -27,5 +33,14 @@ SET(CXXFLAGS "${CPU_FLAGS}  ${CTUNING} ${OTHER_FLAGS} -fno-rtti -fno-exceptions 
 SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   ${CFLAGS}   -ffunction-sections -fdata-sections")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXXFLAGS} -ffunction-sections -fdata-sections")
 
-#TODO: remove CoIDE dependency
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -Wl,-T${CMAKE_SOURCE_DIR}/CoIDE/arm-gcc-link.ld")
+#eclipse Linker:
+#arm-none-eabi-gcc -mcpu=arm926ej-s -marm -mthumb-interwork -O0 
+# -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections 
+# -Wall  -g3 -T "/home/stawel/Cypress/cyfx3sdk/fw_build/boot_fw/cyfx3.ld" 
+# -nostartfiles -Xlinker --gc-sections 
+# -L"/home/stawel/Cypress/cyfx3sdk/boot_lib/1_3_3/lib" 
+# -Wl,-Map,"BootLedBlink.map" -Wl,-d -Wl,-elf -Wl,--no-wchar-size-warning 
+# -Wl,--entry,Reset_Handler -o "BootLedBlink.elf"  ./cyfx_gcc_startup.o ./main.o   -lcyfx3boot -lc -lgcc
+
+set(LINKER_FLAGS "-T /home/stawel/Cypress/cyfx3sdk/fw_build/boot_fw/cyfx3.ld -nostartfiles -Xlinker --gc-sections -L/home/stawel/Cypress/cyfx3sdk/boot_lib/1_3_3/lib")
+set(CMAKE_EXE_LINKER_FLAGS "${CPU_FLAGS} ${OTHER_FLAGS} ${LINKER_FLAGS}")
