@@ -12,6 +12,7 @@ INCLUDE(CMakeForceCompiler)
 CMAKE_FORCE_C_COMPILER(${CMAKE_C_COMPILER} GNU)
 CMAKE_FORCE_CXX_COMPILER(${CMAKE_CXX_COMPILER} GNU)
 
+set(FX3_PATH $ENV{FX3_INSTALL_PATH})
 
 #eclipse Assembler:
 #arm-none-eabi-gcc -mcpu=arm926ej-s -marm -mthumb-interwork -O0 -fmessage-length=0 
@@ -23,6 +24,7 @@ CMAKE_FORCE_CXX_COMPILER(${CMAKE_CXX_COMPILER} GNU)
 # -fsigned-char -ffunction-sections -fdata-sections -Wall  
 # -g3 -I"/home/stawel/Cypress/cyfx3sdk/boot_lib/1_3_3/include" -std=gnu11 -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
 
+include_directories("${FX3_PATH}/boot_lib/1_3_3/include")
 
 SET(CTUNING "-fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections")
 SET(CPU_FLAGS "-mcpu=arm926ej-s -marm -mthumb-interwork")
@@ -42,5 +44,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXXFLAGS} -ffunction-sections -fdata-s
 # -Wl,-Map,"BootLedBlink.map" -Wl,-d -Wl,-elf -Wl,--no-wchar-size-warning 
 # -Wl,--entry,Reset_Handler -o "BootLedBlink.elf"  ./cyfx_gcc_startup.o ./main.o   -lcyfx3boot -lc -lgcc
 
-set(LINKER_FLAGS "-T /home/stawel/Cypress/cyfx3sdk/fw_build/boot_fw/cyfx3.ld -nostartfiles -Xlinker --gc-sections -L/home/stawel/Cypress/cyfx3sdk/boot_lib/1_3_3/lib")
-set(CMAKE_EXE_LINKER_FLAGS "${CPU_FLAGS} ${OTHER_FLAGS} ${LINKER_FLAGS}")
+
+set(LINKER_FLAGS "-T ${FX3_PATH}/fw_build/boot_fw/cyfx3.ld -nostartfiles -Xlinker --gc-sections -L${FX3_PATH}/boot_lib/1_3_3/lib  -Wl,-d -Wl,-elf -Wl,--no-wchar-size-warning  -Wl,--entry,Reset_Handler")
+set(CMAKE_EXE_LINKER_FLAGS "${LINKER_FLAGS}")

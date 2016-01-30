@@ -5,7 +5,7 @@ SET(CMAKE_SYSTEM_NAME Generic)
 include(arm-compiler.cmake)
 
 
-Project(led-example)
+Project(led-example C ASM)
 
 
 add_subdirectory(src)
