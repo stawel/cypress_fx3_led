@@ -1,5 +1,5 @@
 
-set(SRC cyfx_gcc_startup.S  defines.h  main.c)
+set(SRC   defines.h  main.c cyfx_gcc_startup.S)
 
 set_source_files_properties(cyfx_gcc_startup.S PROPERTIES COMPILE_FLAGS "-x assembler-with-cpp")
 

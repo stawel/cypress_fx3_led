@@ -44,6 +44,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${CXXFLAGS} -ffunction-sections -fdata-s
 # -Wl,-Map,"BootLedBlink.map" -Wl,-d -Wl,-elf -Wl,--no-wchar-size-warning 
 # -Wl,--entry,Reset_Handler -o "BootLedBlink.elf"  ./cyfx_gcc_startup.o ./main.o   -lcyfx3boot -lc -lgcc
 
-
-set(LINKER_FLAGS "-T ${FX3_PATH}/fw_build/boot_fw/cyfx3.ld -nostartfiles -Xlinker --gc-sections -L${FX3_PATH}/boot_lib/1_3_3/lib  -Wl,-d -Wl,-elf -Wl,--no-wchar-size-warning  -Wl,--entry,Reset_Handler")
+link_directories(${FX3_PATH}/boot_lib/1_3_3/lib)
+set(LINKER_FLAGS "-T ${FX3_PATH}/fw_build/boot_fw/cyfx3.ld -nostartfiles -Xlinker --gc-sections  -Wl,-d -Wl,-elf -Wl,--no-wchar-size-warning  -Wl,--entry,Reset_Handler")
 set(CMAKE_EXE_LINKER_FLAGS "${LINKER_FLAGS}")
