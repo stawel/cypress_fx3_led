@@ -7,5 +7,6 @@ include(arm-compiler.cmake)
 
 Project(led-example C ASM)
 
+include(arm-compiler.cmake)
 
 add_subdirectory(src)
